@@ -46,5 +46,63 @@ yargs.command({
 
 })
 
+yargs.command({
+    command: 'remove',
+    describe: 'renove a contact',
+    builder:{
+        name:{
+            describe:'contact Name',
+            demandOption: true,
+            type:'string',
+        },
+        email: {
+            describe: 'contact email',
+            demandOption: false,
+            type : 'string'
+        },
+        mobile:{
+            describe: 'contact mobile phone number',
+            demandOption: true,
+            type : 'string',
+        },
+    },
+    handler(argv){
+
+            funtion.removedate(argv.name, argv.email, argv.mobile);
+            
+        
+        
+    }
+
+})
+
+yargs.command({
+    command: 'detail',
+    describe: 'detail a contact',
+    builder:{
+        name:{
+            describe:'contact Name',
+            demandOption: true,
+            type:'string',
+        }
+        
+    },
+    handler(argv){
+
+            funtion.detaildate(argv.name);     
+    }
+
+})
+
+yargs.command({
+    command: 'list',
+    describe: 'list a contact',
+    handler(argv){
+
+            funtion.listcontact()     
+    }
+
+})
+
 yargs.parse()
 // console.log(yargs.argv)

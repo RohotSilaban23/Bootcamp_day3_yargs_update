@@ -39,9 +39,41 @@ const savedate =  async(name, email, mobile) =>{
     }
     // untuk mebuat data yg di input ke array
     json = JSON.stringify(obj)
-    //untuk menulis data pada json
+    //untuk menulis data pada jsongit
     fs.writeFileSync('data/contacts.json', json)
     process.exit(0)
 }
 
-module.exports = { savedate};
+//funsi untuk memeriksa data json dan menparse
+const loadContacts = function () {
+    try {
+        const data = fs.readFileSync('data/contacts.json');
+        return JSON.parse(data);
+    } catch (e) {
+        return [];
+    }
+}
+
+//fungsi untuk mecari data dan menamilkan detail data
+const detaildate = function(name) {
+    const date = loadContacts()
+    const contactsToKeep = date.filter(function(contact) {
+        return contact.name == name
+    })
+    
+    if(contactsToKeep.length == 0){
+        console.log("data not Found")
+        process.exit()
+    }
+    
+}
+
+// fungsi untul mengeluarkan list data ada json
+const listcontact = function() {
+        const contact = loadContacts()
+        console.log("Your contacts..")
+        contact.forEach((contact, index) => {
+            console.log(index+1 ,contact.name ,'-', contact.mobile)
+        });
+    }
+module.exports = { savedate, detaildate, listcontact };
