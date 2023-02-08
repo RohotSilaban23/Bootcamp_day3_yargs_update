@@ -25,11 +25,8 @@ const savedate =  async(name, email, mobile) =>{
    // untuk memeriksa apakah ada nama yang di input 
    //sudah ada pada database atai tidak
     for(let i=0 ; i<obj.length ;i++){
-        
-        
         if(obj[i].name.toLowerCase()== name.toLowerCase()){
-
-            console.log('nama sudah ada pada data')
+            console.log(`${name} sudah ada pada data`)
             process.exit(0)
         }
     }
@@ -44,7 +41,7 @@ const savedate =  async(name, email, mobile) =>{
     json = JSON.stringify(obj)
     //untuk menulis data pada jsongit
     fs.writeFileSync('data/contacts.json', json)
-    process.exit(0)
+    console.log('data berhasil di masukkan pada database')
 }
 
 //funsi untuk memeriksa data json dan menparse
@@ -60,7 +57,6 @@ const loadContacts = function () {
 //fungsi untuk mecari data dan menamilkan detail data
 const detaildate = function(name) {
     const date = loadContacts()
-    console.log(name);
     const contactsToKeep = date.find((contact) => 
         contact.name.toLowerCase() === name.toLowerCase()
     )
@@ -106,6 +102,13 @@ const updateDate = function(name,Newname, email, mobile) {
 
     if(Newname == null){
         Newname = data.name
+        const contactsToKeep = date.find((contact) => 
+        contact.name.toLowerCase() !== Newname.toLowerCase()
+         )
+        if(contactsToKeep){
+            console.log(`data ${name}, sudah ada`)
+            return false
+        } 
     }
     if(email==null){
         email= data.email
@@ -114,22 +117,28 @@ const updateDate = function(name,Newname, email, mobile) {
         mobile = data.mobile
     }
 
-    
-    const contactsToKeep = date.filter((contact) => 
-    contact.name.toLowerCase() !== Newname.toLowerCase()
-     )
-    console.log(contactsToKeep)
-    if(contactsToKeep){
-        console.log(`data ${name}, sudah ada`)
+    if(!validate.isEmail(email)){
+        console.log(`format email anda : ${email} salah`)
         return false
-    } 
-   
-   
+    }
+    if(!validate.isMobilePhone(mobile, 'id-ID')){
+        console.log(`format nomer anda : ${mobile} salah`)
+        return false
+    }
+
+    
+
+    console.log(`Data sebelum dirubah : ${JSON.stringify(data)}`)
     removedate(name)
     savedate(Newname, email,mobile)
+    // const contactsToKeep = date.find((contact) => 
+    //     contact.name.toLowerCase() === Newname.toLowerCase()
+    //      )
+    const hasil = detaildate(Newname)
+    console.log(`Data sesudah di Update : ${JSON.stringify(hasil)} `)
     
    
-
+    process.exit(0)
 }
 
 module.exports = { savedate, detaildate, listcontact , removedate, updateDate};
