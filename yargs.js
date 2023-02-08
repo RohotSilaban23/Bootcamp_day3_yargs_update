@@ -94,5 +94,42 @@ yargs.command({
 
 })
 
+yargs.command({
+    command: 'update',
+    describe: 'update a new contact',
+    builder:{
+        name:{
+            describe:'contact Name',
+            demandOption: true,
+            type:'string',
+        },
+        Newname:{
+            describe:'contact new Name',
+            demandOption: false,
+            type:'string',
+        }, 
+
+        email: {
+            describe: 'contact email',
+            demandOption: false,
+            type : 'string'
+        },
+        mobile:{
+            describe: 'contact mobile phone number',
+            demandOption: false,
+            type : 'string',
+        },
+        
+      
+    },
+    handler(argv){
+            
+            
+        funtion.updateDate(argv.name,argv.Newname,argv.email, argv.mobile)
+        
+    }
+
+})
+
 yargs.parse()
 // console.log(yargs.argv)

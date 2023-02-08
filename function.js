@@ -60,14 +60,18 @@ const loadContacts = function () {
 //fungsi untuk mecari data dan menamilkan detail data
 const detaildate = function(name) {
     const date = loadContacts()
-    const contactsToKeep = date.filter(function(contact) {
-        return contact.name == name
-    })
+    console.log(name);
+    const contactsToKeep = date.find((contact) => 
+        contact.name.toLowerCase() === name.toLowerCase()
+    )
+    if(!contactsToKeep){
+        console.log(`data ${name}, tidak ditemukan`)
+        return false
+    } 
+    return contactsToKeep
     
-    if(contactsToKeep.length == 0){
-        console.log("data not Found")
-        process.exit()
-    }
+   
+    
     
 }
 
@@ -87,7 +91,7 @@ const removedate = function(name) {
         return contact.name.toLowerCase() !== name.toLowerCase()
     })
     if(contacts.length > contactsToKeep.length) {
-        console.log(`Data Dengan Nama : ${name}, telah dihapus`)
+        
         json = JSON.stringify(contactsToKeep)
         fs.writeFileSync('data/contacts.json', json)
     }
@@ -95,4 +99,37 @@ const removedate = function(name) {
         console.log("No note Found")
     }
 }
-module.exports = { savedate, detaildate, listcontact , removedate};
+
+const updateDate = function(name,Newname, email, mobile) {
+    const data = detaildate(name);
+    const date =loadContacts()
+
+    if(Newname == null){
+        Newname = data.name
+    }
+    if(email==null){
+        email= data.email
+    }
+    if(mobile == null){
+        mobile = data.mobile
+    }
+
+    
+    const contactsToKeep = date.filter((contact) => 
+    contact.name.toLowerCase() !== Newname.toLowerCase()
+     )
+    console.log(contactsToKeep)
+    if(contactsToKeep){
+        console.log(`data ${name}, sudah ada`)
+        return false
+    } 
+   
+   
+    removedate(name)
+    savedate(Newname, email,mobile)
+    
+   
+
+}
+
+module.exports = { savedate, detaildate, listcontact , removedate, updateDate};
