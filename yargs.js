@@ -54,21 +54,11 @@ yargs.command({
             describe:'contact Name',
             demandOption: true,
             type:'string',
-        },
-        email: {
-            describe: 'contact email',
-            demandOption: false,
-            type : 'string'
-        },
-        mobile:{
-            describe: 'contact mobile phone number',
-            demandOption: true,
-            type : 'string',
-        },
+        }
     },
     handler(argv){
 
-            funtion.removedate(argv.name, argv.email, argv.mobile);
+            funtion.removedate(argv.name);
             
         
         

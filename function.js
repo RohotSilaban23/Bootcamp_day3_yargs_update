@@ -2,7 +2,8 @@
 const readline = require('readline');
 const { resolve } = require('path');
 const fs = require('fs')
-const validate = require('validator')
+const validate = require('validator');
+const { log } = require('console');
 
 // memeriksan apakah folder ada atau tidak jika tidak maka buat
 if (!fs.existsSync('data')){
@@ -25,7 +26,9 @@ const savedate =  async(name, email, mobile) =>{
    //sudah ada pada database atai tidak
     for(let i=0 ; i<obj.length ;i++){
         
+        
         if(obj[i].name.toLowerCase()== name.toLowerCase()){
+
             console.log('nama sudah ada pada data')
             process.exit(0)
         }
@@ -76,4 +79,20 @@ const listcontact = function() {
             console.log(index+1 ,contact.name ,'-', contact.mobile)
         });
     }
-module.exports = { savedate, detaildate, listcontact };
+
+    // funsi untuk menghaus data dengan cara menima data lama denga data yang baru
+const removedate = function(name) {
+    const contacts = loadContacts()
+    const contactsToKeep = contacts.filter(function(contact) {
+        return contact.name.toLowerCase() !== name.toLowerCase()
+    })
+    if(contacts.length > contactsToKeep.length) {
+        console.log(`Data Dengan Nama : ${name}, telah dihapus`)
+        json = JSON.stringify(contactsToKeep)
+        fs.writeFileSync('data/contacts.json', json)
+    }
+    else {
+        console.log("No note Found")
+    }
+}
+module.exports = { savedate, detaildate, listcontact , removedate};
